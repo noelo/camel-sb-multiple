@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>fis-multi</groupId>
+	<artifactId>com.redhat.demo</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>com.redhat.demo</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<!-- configure the versions you want to use here -->
+		<fabric8.version>2.2.170.redhat-000004</fabric8.version>
+		<spring-boot.version>1.4.1.RELEASE</spring-boot.version>
+
+		<fabric8.maven.plugin.version>3.1.80.redhat-000004</fabric8.maven.plugin.version>
+		<maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
+		<maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
+	</properties>
+
+	<modules>
+		<module>module1</module>
+		<module>module2</module>
+		<module>Bootstrap</module>
+	</modules>
+
+</project>

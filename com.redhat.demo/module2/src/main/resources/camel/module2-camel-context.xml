@@ -1,0 +1,8 @@
+<route id="_m2route1" xmlns="http://camel.apache.org/schema/spring">
+	<from id="_m2from1" uri="timer://foo?period=1000" />
+	<setBody id="_m2setBody1">
+		<simple>Hello World from module2-camel-contex.xml</simple>
+	</setBody>
+	<log id="_m2log1" message=">>> ${body}" />
+</route>
+
