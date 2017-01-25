@@ -15,27 +15,35 @@
  */
 package com.redhat.test;
 
-import org.apache.camel.builder.RouteBuilder;
+import org.apache.cxf.Bus;
+import org.apache.cxf.bus.spring.SpringBus;
+import org.apache.cxf.transport.servlet.CXFServlet;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportResource;
 
 /**
- * A spring-boot application that includes a Camel route builder to setup the Camel routes
+ * A spring-boot application that includes a Camel route builder to setup the
+ * Camel routes
  */
 @SpringBootApplication
-//@ImportResource({"classpath:spring/bootstrap-camel-context.xml","classpath:spring/module1-camel-context.xml"})
-public class Application extends RouteBuilder {
+@ImportResource({ "classpath:spring/spring-beans.xml" })
+public class Application {
 
-    // must have a main method spring-boot can run
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+	// must have a main method spring-boot can run
+	public static void main(String[] args) {
+		SpringApplication.run(Application.class, args);
+	}
+
+    @Bean
+    public ServletRegistrationBean cxfServlet() {
+        return new ServletRegistrationBean(new CXFServlet(), "/soap-api/*");
     }
 
-    @Override
-    public void configure() throws Exception {
-        from("timer://foo?period=5000")
-            .setBody().constant("Bootstrap RouteBuilder Hello World")
-            .log(">>> ${body}");
+    @Bean(name = Bus.DEFAULT_BUS_ID)
+    public SpringBus springBus() {
+        return new SpringBus();
     }
 }
