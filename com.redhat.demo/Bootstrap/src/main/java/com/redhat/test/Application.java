@@ -18,6 +18,7 @@ package com.redhat.test;
 import org.apache.cxf.Bus;
 import org.apache.cxf.bus.spring.SpringBus;
 import org.apache.cxf.transport.servlet.CXFServlet;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -37,13 +38,16 @@ public class Application {
 		SpringApplication.run(Application.class, args);
 	}
 
-    @Bean
-    public ServletRegistrationBean cxfServlet() {
-        return new ServletRegistrationBean(new CXFServlet(), "/soap-api/*");
-    }
+	@Autowired
+	private RouteConfig config;
 
-    @Bean(name = Bus.DEFAULT_BUS_ID)
-    public SpringBus springBus() {
-        return new SpringBus();
-    }
+	@Bean
+	public ServletRegistrationBean cxfServlet() {
+		return new ServletRegistrationBean(new CXFServlet(), "/soap-api/*");
+	}
+
+	@Bean(name = Bus.DEFAULT_BUS_ID)
+	public SpringBus springBus() {
+		return new SpringBus();
+	}
 }
