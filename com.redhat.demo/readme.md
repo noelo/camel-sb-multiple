@@ -11,4 +11,4 @@
 * spring.cloud.kubernetes.configmap.enabled=true
 3. Create and populate the related configmap e.g. oc create configmap demoapp --from-file=application.properties  
 NOTE the configmap name much match the value specified in spring.application.name
-
+4. oc policy add-role-to-user view system:serviceaccount:$(oc project -q):default -n $(oc project -q)
