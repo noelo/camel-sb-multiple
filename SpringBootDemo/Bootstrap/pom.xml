@@ -2,8 +2,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>fis-multi</groupId>
-		<artifactId>com.redhat.demo</artifactId>
+		<groupId>com.redhat.demo</groupId>
+		<artifactId>SpringBootDemo</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>Bootstrap</artifactId>
@@ -89,15 +89,20 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>io.fabric8</groupId>
+			<artifactId>kubernetes-generator</artifactId>
+		</dependency>
+
 
 		<dependency>
-			<groupId>fis-multi</groupId>
+			<groupId>com.redhat.demo</groupId>
 			<version>${project.version}</version>
 			<artifactId>module1</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>fis-multi</groupId>
+			<groupId>com.redhat.demo</groupId>
 			<version>${project.version}</version>
 			<artifactId>module2</artifactId>
 		</dependency>
@@ -182,6 +187,15 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<resources>
+						<labels>
+							<all>
+								<local-build>spring-boot-sample</local-build>
+							</all>
+						</labels>
+					</resources>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
