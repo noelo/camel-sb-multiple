@@ -1,9 +1,0 @@
-apiVersion: "v1"
-  kind: "ImageStream"
-  spec:
-    tags:
-    - from:
-        kind: "ImageStreamImage"
-        name: "bootstrap@sha256:3218eb960a2468c3df376026a9ed6d1502e7cf18df6db539d91248de098d350f"
-        namespace: "test"
-      name: "latest"
