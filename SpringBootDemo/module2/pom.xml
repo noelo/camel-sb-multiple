@@ -6,7 +6,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>module2</artifactId>
-    <dependencyManagement>
+<!--     <dependencyManagement>
     <dependencies>
       <dependency>
         <groupId>io.fabric8</groupId>
@@ -16,7 +16,7 @@
         <scope>import</scope>
       </dependency>
     </dependencies>
-  </dependencyManagement>
+  </dependencyManagement> -->
 
   <dependencies>
 

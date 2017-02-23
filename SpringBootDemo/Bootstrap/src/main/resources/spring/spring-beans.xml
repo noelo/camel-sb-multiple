@@ -29,7 +29,7 @@
 			</setBody>
 			<log id="_log9" message=">>> ${body}" />
 		</route>
-		<route id="_route1">
+		<route id="_beanRoute2">
 			<from id="_from1" uri="cxf:bean:soapMessageEndpoint" />
 			<log id="_logws" message=">>> ${body}" />
 		</route>

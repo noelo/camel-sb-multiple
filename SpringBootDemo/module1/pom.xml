@@ -7,7 +7,7 @@
   </parent>
   <artifactId>module1</artifactId>
   
-    <dependencyManagement>
+<!--     <dependencyManagement>
     <dependencies>
       <dependency>
         <groupId>io.fabric8</groupId>
@@ -17,7 +17,7 @@
         <scope>import</scope>
       </dependency>
     </dependencies>
-  </dependencyManagement>
+  </dependencyManagement> -->
 
   <dependencies>
 

@@ -7,17 +7,6 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>Bootstrap</artifactId>
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>io.fabric8</groupId>
-				<artifactId>fabric8-project-bom-camel-spring-boot</artifactId>
-				<version>${fabric8.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 
 	<dependencies>
 		<dependency>
@@ -92,6 +81,7 @@
 		<dependency>
 			<groupId>io.fabric8</groupId>
 			<artifactId>kubernetes-generator</artifactId>
+			<scope>provided</scope>
 		</dependency>
 
 
@@ -188,10 +178,25 @@
 					</execution>
 				</executions>
 				<configuration>
+					<enricher>
+						<excludes>
+							<exclude>f8-prometheus</exclude>
+							<exclude>f8-icon</exclude>
+						</excludes>
+						<config>
+							<fmp-name>
+								<name>testagain</name>
+							</fmp-name>
+							<fmp-service>
+								<name>${project.name}-${project.version}</name>
+							</fmp-service>
+						</config>
+					</enricher>
 					<resources>
 						<labels>
 							<all>
-								<local-build>spring-boot-sample</local-build>
+								<local-build>true</local-build>
+								<project-fqn>${project.name}-${project.version}</project-fqn>
 							</all>
 						</labels>
 					</resources>
