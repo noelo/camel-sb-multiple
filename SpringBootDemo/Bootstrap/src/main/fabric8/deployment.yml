@@ -1,6 +1,8 @@
 apiVersion: v1
 kind: DeploymentConfig
 metadata:
+   labels:
+       appinstance: ${APPNAME}-${UNIQUE_ID}
    name: ${APPNAME}-${UNIQUE_ID}
 spec:
   replicas: 1

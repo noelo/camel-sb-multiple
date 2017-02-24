@@ -1,12 +1,21 @@
 ---
 apiVersion: "v1"
 kind: "Template"
+metadata:
+  labels:
+    appinstance: ${APPNAME}-${UNIQUE_ID}
 parameters:
 - name: "APPNAME"
+  from: "[a-z0-9]{12}"
   description: "The name of the application"
+  required: true
 - name: "ISTAG"
   description: "The image stream tag name"
+  required: true
 - name: "UNIQUE_ID"
   description: "unique numeric id to differentiate between deployments"
+  from: "[a-z0-9]{12}"
+  generate: expression
 - name: "EXTERNAL_HOST1"
   description: "Hostname of External Service 1"
+message: "Your application is generated using the labels appinstance: ${APPNAME}-${UNIQUE_ID}"

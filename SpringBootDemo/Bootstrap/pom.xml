@@ -180,11 +180,11 @@
                 <configuration>
                     <resources>
                         <labels>
-                            <all>
+                            <deployment>
                                 <project-fqn>${project.name}-${project.version}</project-fqn>
                                 <appname>${{APPNAME}}</appname>
                                 <custom-app-uid>${{UNIQUE_ID}}</custom-app-uid>
-                            </all>
+                            </deployment>
                         </labels>
                     </resources>
                     <enricher>
