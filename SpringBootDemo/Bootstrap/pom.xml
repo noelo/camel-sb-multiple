@@ -184,7 +184,6 @@
                                 <project-fqn>${project.name}-${project.version}</project-fqn>
                                 <appname>${{APPNAME}}</appname>
                                 <custom-app-uid>${{UNIQUE_ID}}</custom-app-uid>
-                                <build-ts>${maven.build.timestamp}</build-ts>
                             </all>
                         </labels>
                     </resources>
@@ -193,10 +192,11 @@
                             <exclude>f8-prometheus</exclude>
                             <exclude>f8-icon</exclude>
                             <exclude>fmp-name</exclude>
+                            <exclude>fmp-git</exclude>
                         </excludes>
                         <config>
                             <fmp-service>
-                                <name>${APPNAME}-svc</name>
+                                <name>${APPNAME}-${UNIQUE_ID}-svc</name>
                                 <type>LoadBalancer</type>
                             </fmp-service>
                         </config>

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: DeploymentConfig
 metadata:
-    name: ${APPNAME}
+   name: ${APPNAME}-${UNIQUE_ID}
 spec:
   replicas: 1
   strategy:
@@ -25,7 +25,7 @@ spec:
               fieldPath: metadata.namespace
         - name: JAVA_APP_DIR
           value: /deployments
-        image: ${APPIMAGESTREAMTAG}
+        image: ${APPNAME}-is:${ISTAG}
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
@@ -75,5 +75,5 @@ spec:
       - spring-boot
       from:
         kind: ImageStreamTag
-        name: ${APPIMAGESTREAMTAG}
+        name: ${APPNAME}-is:${ISTAG}
     type: ImageChange

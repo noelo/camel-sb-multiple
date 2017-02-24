@@ -1,8 +1,12 @@
 ---
 apiVersion: "v1"
 kind: "Template"
-
 parameters:
 - name: "APPNAME"
-- name: "APPIMAGESTREAMTAG"
+  description: "The name of the application"
+- name: "ISTAG"
+  description: "The image stream tag name"
 - name: "UNIQUE_ID"
+  description: "unique numeric id to differentiate between deployments"
+- name: "EXTERNAL_HOST1"
+  description: "Hostname of External Service 1"
