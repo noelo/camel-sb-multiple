@@ -3,6 +3,7 @@ kind: Service
 metadata:
   labels:
     appinstance: ${APPNAME}-${UNIQUE_ID}
+    appowner: ${APPOWNER}
   name: ${APPNAME}-${UNIQUE_ID}-ext1-svc
 spec:
   ports:

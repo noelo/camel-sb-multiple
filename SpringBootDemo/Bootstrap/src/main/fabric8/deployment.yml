@@ -3,6 +3,7 @@ kind: DeploymentConfig
 metadata:
    labels:
        appinstance: ${APPNAME}-${UNIQUE_ID}
+       appowner: ${APPOWNER}
    name: ${APPNAME}-${UNIQUE_ID}
 spec:
   replicas: 1
@@ -17,6 +18,9 @@ spec:
     type: Rolling
   template:
     metadata:
+      labels:
+        appinstance: ${APPNAME}-${UNIQUE_ID}
+        appowner: ${APPOWNER}
     spec:
       containers:
       - env:
@@ -27,6 +31,8 @@ spec:
               fieldPath: metadata.namespace
         - name: JAVA_APP_DIR
           value: /deployments
+        - name: JAVA_OPTIONS
+          value: -Dspring.application.name=${APPNAME}-${UNIQUE_ID}
         image: ${APPNAME}-is:${ISTAG}
         imagePullPolicy: IfNotPresent
         livenessProbe:

@@ -9,6 +9,10 @@ parameters:
   from: "[a-z0-9]{12}"
   description: "The name of the application"
   required: true
+- name: "APPOWNER"
+  from: "[a-z0-9]{12}"
+  description: "The owner of the application, populate with oc whoami"
+  required: true
 - name: "ISTAG"
   description: "The image stream tag name"
   required: true

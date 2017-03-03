@@ -4,6 +4,7 @@ kind: "Template"
 metadata:
   labels:
     appinstance: ${APPNAME}
+    appowner: ${APPOWNER}
 objects:
 - apiVersion: v1
   kind: BuildConfig
@@ -43,4 +44,8 @@ parameters:
   required: true
 - name: "ISTAG"
   description: "The image stream tag name"
+  required: true
+- name: "APPOWNER"
+  from: "[a-z0-9]{12}"
+  description: "The owner of the application, populate with oc whoami"
   required: true
