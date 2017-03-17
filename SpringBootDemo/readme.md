@@ -3,6 +3,8 @@
 * Multi-module Spring boot applicaton using routes defined in modules
 * Spring-cloud-kubernetes configmap & secrets 
 
+More detailed instructions container in the Bootstrap directory
+
 
 ## To use Spring-cloud-kubernetes 
 1. Add the spring.application.name to application.properties, e.g. spring.application.name=demoapp. Ensure that the name follows the naming conventions for configmaps

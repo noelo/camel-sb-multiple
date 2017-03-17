@@ -181,15 +181,15 @@
                     <resources>
                         <labels>
                             <service>
-                                <project-fqn>${project.name}-${project.version}</project-fqn>
                                 <appname>${{APPNAME}}</appname>
                                 <custom-app-uid>${{UNIQUE_ID}}</custom-app-uid>
                             </service>
                         </labels>
                         <annotations>
-                          <all>
-                            <io.custom.interface-version>${org.interface.classifier}</io.custom.interface-version>
-                          </all>
+                            <all>
+                                <io.custom.interface-version>${org.interface.classifier}</io.custom.interface-version>
+                                <project.fqn>${project.name}-${project.version}</project.fqn>
+                            </all>
                         </annotations>
                     </resources>
                     <enricher>

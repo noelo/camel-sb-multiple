@@ -7,7 +7,10 @@ The BuildConfig & ImageStream templates reside in the src/main/resources/static 
 ### Application & Resource Naming
 As part of the resource generation using template the template will automatically name resources based on a combination of the the *APPNAME* and a random generated string.
 
-This ***name*** is used in all resources as well as the **spring.application.name** property which is used in the retrieval of *ConfigMaps* and *Secrets* 
+This ***name*** is used in all resources as well as the **spring.application.name** property which is used in the retrieval of *ConfigMaps* and *Secrets* .
+***Name*** can be a string of 12 characters consisting of (a-z, and 0-9)
+
+See https://github.com/kubernetes/community/blob/master/contributors/design-proposals/identifiers.md for limitations on names
 
 In the examples below all resource use the name **springdemo-pgk2ierggpft**
 
@@ -15,12 +18,12 @@ In the examples below all resource use the name **springdemo-pgk2ierggpft**
 ### Creating the Buildconfig and ImageStream from a template
 
 ```
-$oc process -v APPNAME=springdemo -v ISTAG=iter1 -v APPOWNER=`oc whoami`  -f build-config.yml |oc create -f-
+$oc process -v APPNAME=springdemo -v ISTAG=iter1 -v APPOWNER=`oc whoami`  -f ./Bootstrap/src/main/resources/static/build-config.yml |oc create -f-
 buildconfig "springdemo-bc" created
 imagestream "springdemo-is" created
 
-$oc start-build bc/springdemo-bc --from-file=/Users/admin/dev/ose-projects/fis2.0/SpringBootDemo/Bootstrap/target/Bootstrap-0.0.1-SNAPSHOT.jar
-Uploading file "/Users/admin/dev/ose-projects/fis2.0/SpringBootDemo/Bootstrap/target/Bootstrap-0.0.1-SNAPSHOT.jar" as binary input for the build ...
+$oc start-build bc/springdemo-bc --from-file=./Bootstrap/target/Bootstrap-0.0.1-SNAPSHOT.jar
+Uploading file "./Bootstrap/target/Bootstrap-0.0.1-SNAPSHOT.jar" as binary input for the build ...
 build "springdemo-bc-1" started
 ```
 
@@ -36,21 +39,28 @@ deploymentconfig "springdemo-pgk2ierggpft" created
 oc policy add-role-to-user view --serviceaccount=default
 ```
 
+#### To get the generated application name you can use the following
+```
+oc get dc --template='{{range .items}}{{.metadata.name}}{{end}}'
+
+APPNAME=`oc get dc --template='{{range .items}}{{.metadata.name}}{{end}}'`
+```
+
 ### Creating the ConfigMaps
 ```
-oc create configmap springdemo-pgk2ierggpft --from-file=application.properties
+oc create configmap ${APPNAME} --from-file=./Bootstrap/application.properties
 ```
 
 
 ### Creating Secrets
 ```
-oc create secret generic springdemo-pgk2ierggpft --from-literal=secret.username=value1 --from-literal=secret.password=value1
+oc create secret generic ${APPNAME} --from-literal=secret.username=value1 --from-literal=secret.password=value1
 ```
 
 ### Mounting the secret for consumption in the application
 
 ```
-oc volume dc/springdemo-pgk2ierggpft --add -t secret -m /etc/ocp/secrets --secret-name=springdemo-pgk2ierggpft
+oc volume dc/${APPNAME} --add -t secret -m /etc/ocp/secrets --secret-name=${APPNAME} --name=${APPNAME}-secret
 ```
 
 The mount point is defined in the Spring bootstrap.properties
