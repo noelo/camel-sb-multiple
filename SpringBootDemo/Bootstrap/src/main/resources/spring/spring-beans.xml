@@ -17,6 +17,7 @@
 		serviceClass="org.apache.camel.example.cxf.provider.GreeterProvider"
 		serviceName="s:SOAPService" wsdlURL="wsdl/hello_world.wsdl"
 		xmlns:s="http://apache.org/hello_world_soap_http" />
+
 	<bean class="com.redhat.test.RouteConfig" id="config" />
 	
 	

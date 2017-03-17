@@ -180,12 +180,17 @@
                 <configuration>
                     <resources>
                         <labels>
-                            <deployment>
+                            <service>
                                 <project-fqn>${project.name}-${project.version}</project-fqn>
                                 <appname>${{APPNAME}}</appname>
                                 <custom-app-uid>${{UNIQUE_ID}}</custom-app-uid>
-                            </deployment>
+                            </service>
                         </labels>
+                        <annotations>
+                          <all>
+                            <io.custom.interface-version>${org.interface.classifier}</io.custom.interface-version>
+                          </all>
+                        </annotations>
                     </resources>
                     <enricher>
                         <excludes>

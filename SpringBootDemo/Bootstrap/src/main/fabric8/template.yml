@@ -18,7 +18,7 @@ parameters:
   required: true
 - name: "UNIQUE_ID"
   description: "unique numeric id to differentiate between deployments"
-  from: "[a-z0-9]{12}"
+  from: "[a-z0-9]{6}"
   generate: expression
 - name: "EXTERNAL_HOST1"
   description: "Hostname of External Service 1"
