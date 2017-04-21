@@ -4,6 +4,7 @@ metadata:
    labels:
        appinstance: ${APPNAME}-${UNIQUE_ID}
        appowner: ${APPOWNER}
+
    name: ${APPNAME}-${UNIQUE_ID}
 spec:
   replicas: 1

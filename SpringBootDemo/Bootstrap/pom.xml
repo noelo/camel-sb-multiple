@@ -17,6 +17,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -31,6 +32,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-undertow</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-servlet</artifactId>
+        </dependency>
+
 
         <dependency>
             <groupId>org.apache.camel</groupId>
@@ -43,12 +49,22 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-http4</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-frontend-jaxws</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-transports-http</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-kubernetes</artifactId>
         </dependency>
 
         <!-- testing -->
@@ -78,28 +94,53 @@
             <scope>test</scope>
         </dependency>
 
+
         <dependency>
             <groupId>io.fabric8</groupId>
             <artifactId>kubernetes-generator</artifactId>
             <scope>provided</scope>
         </dependency>
 
-
         <dependency>
-            <groupId>com.redhat.demo</groupId>
-            <version>${project.version}</version>
-            <artifactId>module1</artifactId>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-hystrix</artifactId>
+            <version>RELEASE</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.redhat.demo</groupId>
-            <version>${project.version}</version>
-            <artifactId>module2</artifactId>
-        </dependency>
+
+        <!--<dependency>-->
+        <!--<groupId>com.redhat.demo</groupId>-->
+        <!--<version>${project.version}</version>-->
+        <!--<artifactId>module1</artifactId>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+        <!--<groupId>com.redhat.demo</groupId>-->
+        <!--<version>${project.version}</version>-->
+        <!--<artifactId>module2</artifactId>-->
+        <!--</dependency>-->
 
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/metadata.properties</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/metadata.properties</exclude>
+                </excludes>
+            </resource>
+
+        </resources>
+
         <!-- <defaultGoal>spring-boot:run</defaultGoal> -->
         <plugins>
             <plugin>
@@ -187,8 +228,10 @@
                         </labels>
                         <annotations>
                             <all>
-                                <io.custom.interface-version>${org.interface.classifier}</io.custom.interface-version>
-                                <project.fqn>${project.name}-${project.version}</project.fqn>
+                                <com.acme.interface-version>${rest.interface.version}</com.acme.interface-version>
+                                <com.acme.app.fqn>${project.name}-${project.version}</com.acme.app.fqn>
+                                <com.acme.project.version>${project.version}</com.acme.project.version>
+                                <com.acme.project.buildtimestamp>${maven.build.timestamp}</com.acme.project.buildtimestamp>
                             </all>
                         </annotations>
                     </resources>

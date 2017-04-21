@@ -12,27 +12,29 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:cxf="http://camel.apache.org/schema/cxf" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd     ">
-	<cxf:cxfEndpoint address="/SOAPMessageService"
+
+    <cxf:cxfEndpoint address="/SOAPMessageService"
 		endpointName="s:SoapOverHttpRouter" id="soapMessageEndpoint"
 		serviceClass="org.apache.camel.example.cxf.provider.GreeterProvider"
 		serviceName="s:SOAPService" wsdlURL="wsdl/hello_world.wsdl"
 		xmlns:s="http://apache.org/hello_world_soap_http" />
 
 	<bean class="com.redhat.test.RouteConfig" id="config" />
-	
-	
+
+
 	
 	<camelContext id="test_context" xmlns="http://camel.apache.org/schema/spring">
-		<route id="_beanRoute1" xmlns="http://camel.apache.org/schema/spring">
-			<from id="_from9" uri="timer://foo?period=10000" />
-			<setBody id="_setBody9">
-				<simple>Hello World from Bootstrap-camel-contex.xml with ${bean:config.getMessage} </simple>
-			</setBody>
-			<log id="_log9" message=">>> ${body}" />
+
+		<route id="_beanRoute1" xmlns="http://camel.apache.org/schema/spring" autoStartup="true" trace="true">
+			<from uri="servlet:///main?servletName=CamelServlet&amp;matchOnUriPrefix=true"/>
+			<log message="Incoming request"/>
+			<to uri="direct:getip"/>
+			<log id="_logdir" message="Outgoing ${body} ${headers}" />
 		</route>
-		<route id="_beanRoute2">
+
+		<route id="_beanRoute2" trace="true">
 			<from id="_from1" uri="cxf:bean:soapMessageEndpoint" />
-			<log id="_logws" message=">>> ${body}" />
+			<log id="_logws" message=">>> ${body} ${headers}" />
 		</route>
 	</camelContext>
 </beans>

@@ -6,20 +6,23 @@ metadata:
     appinstance: ${APPNAME}-${UNIQUE_ID}
 parameters:
 - name: "APPNAME"
-  from: "[a-z0-9]{12}"
+  from: "[a-z0-9]{16}"
   description: "The name of the application"
   required: true
 - name: "APPOWNER"
   from: "[a-z0-9]{12}"
   description: "The owner of the application, populate with oc whoami"
   required: true
+- name: "SERVICEVERSION"
+  from: "[0-9_]{12}"
+  description: "The interface version of the service"
+  required: true
 - name: "ISTAG"
   description: "The image stream tag name"
   required: true
 - name: "UNIQUE_ID"
   description: "unique numeric id to differentiate between deployments"
-  from: "[a-z0-9]{6}"
-  generate: expression
+  from: "[a-z0-9]{3}"
+  required: true
 - name: "EXTERNAL_HOST1"
   description: "Hostname of External Service 1"
-message: "Your application is generated using the labels appinstance: ${APPNAME}-${UNIQUE_ID}"

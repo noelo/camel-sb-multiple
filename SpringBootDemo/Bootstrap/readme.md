@@ -18,7 +18,7 @@ In the examples below all resource use the name **springdemo-pgk2ierggpft**
 ### Creating the Buildconfig and ImageStream from a template
 
 ```
-$oc process -v APPNAME=springdemo -v ISTAG=iter1 -v APPOWNER=`oc whoami`  -f ./Bootstrap/src/main/resources/static/build-config.yml |oc create -f-
+$oc process -p APPNAME=springdemo -p ISTAG=iter1 -p APPOWNER=`oc whoami`  -f ./Bootstrap/src/main/resources/static/build-config.yml |oc create -f-
 buildconfig "springdemo-bc" created
 imagestream "springdemo-is" created
 
@@ -29,7 +29,7 @@ build "springdemo-bc-1" started
 
 ### Creating the DC, Service, External Service from a template
 ```
-$oc process  -f bootstrap-template.yml -v APPNAME=springdemo -v EXTERNAL_HOST1=www.google.com -v ISTAG=iter1 APPOWNER=`oc whoami` | oc create -f-
+$oc process  -f ./Bootstrap/target/classes/META-INF/fabric8/openshift/bootstrap-template.yml -p APPNAME=springdemo -p SERVICEVERSION=10-02-30 -p ISTAG=iter1 UNIQUE_ID=abc APPOWNER=`oc whoami` | oc create -f-
 service "springdemo-pgk2ierggpft-ext1-svc" created
 service "springdemo-pgk2ierggpft-intsvc" created
 deploymentconfig "springdemo-pgk2ierggpft" created

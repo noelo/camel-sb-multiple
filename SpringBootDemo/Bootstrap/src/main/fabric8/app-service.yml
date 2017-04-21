@@ -4,7 +4,7 @@ metadata:
   labels:
     appinstance: ${APPNAME}-${UNIQUE_ID}
     appowner: ${APPOWNER}
-  name: ${APPNAME}-${UNIQUE_ID}-intsvc
+  name: ${APPNAME}-v${SERVICEVERSION}-${UNIQUE_ID}
 spec:
   ports:
   - name: http

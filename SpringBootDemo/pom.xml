@@ -24,6 +24,8 @@
 
         <!-- this is just an example for used in the annotation generator part of fabric8 maven plugin -->
         <org.interface.classifier>28.11</org.interface.classifier>
+        <org.interface.version>1.0.0-alpha</org.interface.version>
+        <rest.interface.version>1.1</rest.interface.version>
     </properties>
 
     <dependencyManagement>

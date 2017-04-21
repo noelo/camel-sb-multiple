@@ -4,7 +4,7 @@ metadata:
   labels:
     appinstance: ${APPNAME}-${UNIQUE_ID}
     appowner: ${APPOWNER}
-  name: ${APPNAME}-${UNIQUE_ID}-ext1-svc
+  name: ${APPNAME}-${UNIQUE_ID}
 spec:
   ports:
   - port: 80

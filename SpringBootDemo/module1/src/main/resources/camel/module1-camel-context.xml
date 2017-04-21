@@ -1,4 +1,4 @@
-<route id="_m1route1" xmlns="http://camel.apache.org/schema/spring">
+<route id="_m1route1" xmlns="http://camel.apache.org/schema/spring" autoStartup="false">
 	<from id="_m1from1" uri="timer://foo?period=1000" />
 	<setBody id="_m1setBody1">
 		<simple>Hello World from module1-camel-contex.xml</simple>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<route id="_route1" xmlns="http://camel.apache.org/schema/spring">
+<route id="_route1" xmlns="http://camel.apache.org/schema/spring" autoStartup="false">
 	<from id="_from1" uri="timer://foo?period=10000" />
 	<setBody id="_setBody1">
 		<simple>Hello World from Bootstrap-camel-contex.xml</simple>
