@@ -18,21 +18,22 @@ In the examples below all resource use the name **springdemo-pgk2ierggpft**
 ### Creating the Buildconfig and ImageStream from a template
 
 ```
-$oc process -p APPNAME=springdemo -p ISTAG=iter1 -p APPOWNER=`oc whoami`  -f ./Bootstrap/src/main/resources/static/build-config.yml |oc create -f-
-buildconfig "springdemo-bc" created
-imagestream "springdemo-is" created
+oc process -p APPNAME=springdemo -p ISTAG=iter1 -p APPOWNER=`oc whoami`  -p SERVICEVERSION="1-10" -p UNIQUE_ID="abc" -f ./Bootstrap/src/main/resources/static/build-config.yml |oc create -f-
 
-$oc start-build bc/springdemo-bc --from-file=./Bootstrap/target/Bootstrap-0.0.1-SNAPSHOT.jar
-Uploading file "./Bootstrap/target/Bootstrap-0.0.1-SNAPSHOT.jar" as binary input for the build ...
-build "springdemo-bc-1" started
+buildconfig "springdemo-1-10-abc" created
+imagestream "springdemo-1-10-abc" created
+
+$oc start-build bc/springdemo-1-10-abc --from-file=./Bootstrap/target/Bootstrap-0.0.5-SNAPSHOT.jar
+ Uploading file "Bootstrap/target/Bootstrap-0.0.5-SNAPSHOT.jar" as binary input for the build ...
+build "springdemo-1-10-abc-1" started
 ```
 
 ### Creating the DC, Service, External Service from a template
 ```
-$oc process  -f ./Bootstrap/target/classes/META-INF/fabric8/openshift/bootstrap-template.yml -p APPNAME=springdemo -p SERVICEVERSION=10-02-30 -p ISTAG=iter1 UNIQUE_ID=abc APPOWNER=`oc whoami` | oc create -f-
-service "springdemo-pgk2ierggpft-ext1-svc" created
-service "springdemo-pgk2ierggpft-intsvc" created
-deploymentconfig "springdemo-pgk2ierggpft" created
+oc process  -f ./Bootstrap/target/classes/META-INF/fabric8/openshift/bootstrap-template.yml -p APPNAME=springdemo -p SERVICEVERSION="1-10" -p ISTAG=iter1 UNIQUE_ID=abc APPOWNER=`oc whoami` | oc create -f-
+service "springdemo-v1-10-abc" created
+deploymentconfig "springdemo-1-10-abc" created
+route "springdemo-v1-10-abc" created
 ```
 ### Adding role permissions to pull config maps into the application
 ```
@@ -103,36 +104,46 @@ oc tag springdemo-is:latest springdemo-is:test2
 
 ### Full resource list
 ```
-NAME               TYPE      FROM      LATEST    LABELS
-bc/springdemo-bc   Source    Binary    4         appinstance=springdemo
+oc get all --show-labels=true
+NAME                     TYPE      FROM      LATEST    LABELS
+bc/springdemo-1-10-abc   Source    Binary    6         appinstance=springdemo-1-10-abc
 
-NAME                     TYPE      FROM      STATUS     STARTED             DURATION   LABELS
-builds/springdemo-bc-1   Source    Binary    Complete   About an hour ago   9s         appinstance=springdemo,buildconfig=springdemo-bc,openshift.io/build-config.name=springdemo-bc,openshift.io/build.start-policy=Serial
-builds/springdemo-bc-2   Source    Binary    Complete   37 minutes ago      8s         appinstance=springdemo,buildconfig=springdemo-bc,openshift.io/build-config.name=springdemo-bc,openshift.io/build.start-policy=Serial
-builds/springdemo-bc-3   Source    Binary    Complete   32 minutes ago      8s         appinstance=springdemo,buildconfig=springdemo-bc,openshift.io/build-config.name=springdemo-bc,openshift.io/build.start-policy=Serial
-builds/springdemo-bc-4   Source    Binary    Complete   16 minutes ago      8s         appinstance=springdemo,buildconfig=springdemo-bc,openshift.io/build-config.name=springdemo-bc,openshift.io/build.start-policy=Serial
+NAME                           TYPE      FROM      STATUS     STARTED       DURATION   LABELS
+builds/springdemo-1-10-abc-1   Source    Binary    Complete   4 hours ago   14s        appinstance=springdemo-1-10-abc,buildconfig=springdemo-1-10-abc,openshift.io/build-config.name=springdemo-1-10-abc,openshift.io/build.start-policy=Serial
+builds/springdemo-1-10-abc-2   Source    Binary    Complete   4 hours ago   14s        appinstance=springdemo-1-10-abc,buildconfig=springdemo-1-10-abc,openshift.io/build-config.name=springdemo-1-10-abc,openshift.io/build.start-policy=Serial
+builds/springdemo-1-10-abc-3   Source    Binary    Complete   4 hours ago   14s        appinstance=springdemo-1-10-abc,buildconfig=springdemo-1-10-abc,openshift.io/build-config.name=springdemo-1-10-abc,openshift.io/build.start-policy=Serial
+builds/springdemo-1-10-abc-4   Source    Binary    Complete   4 hours ago   16s        appinstance=springdemo-1-10-abc,buildconfig=springdemo-1-10-abc,openshift.io/build-config.name=springdemo-1-10-abc,openshift.io/build.start-policy=Serial
+builds/springdemo-1-10-abc-5   Source    Binary    Complete   2 hours ago   14s        appinstance=springdemo-1-10-abc,buildconfig=springdemo-1-10-abc,openshift.io/build-config.name=springdemo-1-10-abc,openshift.io/build.start-policy=Serial
+builds/springdemo-1-10-abc-6   Source    Binary    Complete   2 hours ago   16s        appinstance=springdemo-1-10-abc,buildconfig=springdemo-1-10-abc,openshift.io/build-config.name=springdemo-1-10-abc,openshift.io/build.start-policy=Serial
 
-NAME               DOCKER REPO                                     TAGS      UPDATED          LABELS
-is/springdemo-is   172.30.197.150:5000/spring-test/springdemo-is   iter1     16 minutes ago   appinstance=springdemo
+NAME                 DOCKER REPO                              TAGS                UPDATED       LABELS
+is/springdemo-1-10   172.30.1.1:5000/spring/springdemo-1-10   iter3,iter1,iter2   2 hours ago   appinstance=springdemo-1-10-abc
 
-NAME                         REVISION   DESIRED   CURRENT   TRIGGERED BY                        LABELS
-dc/springdemo-pgk2ierggpft   5          1         1         config,image(springdemo-is:iter1)   appinstance=springdemo-pgk2ierggpft,appowner=developer,group=com.redhat.demo,project=Bootstrap,provider=fabric8,version=0.0.1-SNAPSHOT
+NAME                     REVISION   DESIRED   CURRENT   TRIGGERED BY                          LABELS
+dc/springdemo-1-10-abc   7          2         2         config,image(springdemo-1-10:iter3)   appinstance=springdemo-1-10-abc,appowner=developer,group=com.redhat.demo,project=Bootstrap,provider=fabric8,version=0.0.4-SNAPSHOT
 
-NAME                           DESIRED   CURRENT   READY     AGE       LABELS
-rc/springdemo-pgk2ierggpft-1   0         0         0         1h        appinstance=springdemo-pgk2ierggpft,appowner=developer,group=com.redhat.demo,openshift.io/deployment-config.name=springdemo-pgk2ierggpft,project=Bootstrap,provider=fabric8,version=0.0.1-SNAPSHOT
-rc/springdemo-pgk2ierggpft-2   0         0         0         37m       appinstance=springdemo-pgk2ierggpft,appowner=developer,group=com.redhat.demo,openshift.io/deployment-config.name=springdemo-pgk2ierggpft,project=Bootstrap,provider=fabric8,version=0.0.1-SNAPSHOT
-rc/springdemo-pgk2ierggpft-3   0         0         0         32m       appinstance=springdemo-pgk2ierggpft,appowner=developer,group=com.redhat.demo,openshift.io/deployment-config.name=springdemo-pgk2ierggpft,project=Bootstrap,provider=fabric8,version=0.0.1-SNAPSHOT
-rc/springdemo-pgk2ierggpft-4   0         0         0         16m       appinstance=springdemo-pgk2ierggpft,appowner=developer,group=com.redhat.demo,openshift.io/deployment-config.name=springdemo-pgk2ierggpft,project=Bootstrap,provider=fabric8,version=0.0.1-SNAPSHOT
-rc/springdemo-pgk2ierggpft-5   1         1         1         14m       appinstance=springdemo-pgk2ierggpft,appowner=developer,group=com.redhat.demo,openshift.io/deployment-config.name=springdemo-pgk2ierggpft,project=Bootstrap,provider=fabric8,version=0.0.1-SNAPSHOT
+NAME                       DESIRED   CURRENT   READY     AGE       LABELS
+rc/springdemo-1-10-abc-1   0         0         0         4h        appinstance=springdemo-1-10-abc,appowner=developer,group=com.redhat.demo,openshift.io/deployment-config.name=springdemo-1-10-abc,project=Bootstrap,provider=fabric8,version=0.0.1-SNAPSHOT
+rc/springdemo-1-10-abc-2   0         0         0         4h        appinstance=springdemo-1-10-abc,appowner=developer,group=com.redhat.demo,openshift.io/deployment-config.name=springdemo-1-10-abc,project=Bootstrap,provider=fabric8,version=0.0.1-SNAPSHOT
+rc/springdemo-1-10-abc-3   0         0         0         4h        appinstance=springdemo-1-10-abc,appowner=developer,group=com.redhat.demo,openshift.io/deployment-config.name=springdemo-1-10-abc,project=Bootstrap,provider=fabric8,version=0.0.1-SNAPSHOT
+rc/springdemo-1-10-abc-4   0         0         0         3h        appinstance=springdemo-1-10-abc,appowner=developer,group=com.redhat.demo,openshift.io/deployment-config.name=springdemo-1-10-abc,project=Bootstrap,provider=fabric8,version=0.0.1-SNAPSHOT
+rc/springdemo-1-10-abc-5   0         0         0         3h        appinstance=springdemo-1-10-abc,appowner=developer,group=com.redhat.demo,openshift.io/deployment-config.name=springdemo-1-10-abc,project=Bootstrap,provider=fabric8,version=0.0.2-SNAPSHOT
+rc/springdemo-1-10-abc-6   0         0         0         1h        appinstance=springdemo-1-10-abc,appowner=developer,group=com.redhat.demo,openshift.io/deployment-config.name=springdemo-1-10-abc,project=Bootstrap,provider=fabric8,version=0.0.2-SNAPSHOT
+rc/springdemo-1-10-abc-7   2         2         2         1h        appinstance=springdemo-1-10-abc,appowner=developer,group=com.redhat.demo,openshift.io/deployment-config.name=springdemo-1-10-abc,project=Bootstrap,provider=fabric8,version=0.0.4-SNAPSHOT
 
-NAME                                   CLUSTER-IP     EXTERNAL-IP      PORT(S)   AGE       LABELS
-svc/springdemo-pgk2ierggpft-ext1-svc                  www.google.com   80/TCP    1h        appinstance=springdemo-pgk2ierggpft,appowner=developer,expose=true,group=com.redhat.demo,project=Bootstrap,provider=fabric8,version=0.0.1-SNAPSHOT
-svc/springdemo-pgk2ierggpft-intsvc     172.30.22.65   <none>           80/TCP    1h        appinstance=springdemo-pgk2ierggpft,appowner=developer,expose=true,group=com.redhat.demo,project=Bootstrap,provider=fabric8,version=0.0.1-SNAPSHOT
+NAME                          HOST/PORT                                           PATH      SERVICES               PORT      TERMINATION   WILDCARD   LABELS
+routes/springdemo-v1-10-abc   springdemo-v1-10-abc-spring.192.168.106.35.xip.io             springdemo-v1-10-abc   8080                    None       appinstance=springdemo-abc,appowner=developer,expose=true,group=com.redhat.demo,project=Bootstrap,provider=fabric8,version=0.0.4-SNAPSHOT
 
-NAME                                 READY     STATUS      RESTARTS   AGE       LABELS
-po/springdemo-bc-1-build             0/1       Completed   0          1h        openshift.io/build.name=springdemo-bc-1
-po/springdemo-bc-2-build             0/1       Completed   0          37m       openshift.io/build.name=springdemo-bc-2
-po/springdemo-bc-3-build             0/1       Completed   0          32m       openshift.io/build.name=springdemo-bc-3
-po/springdemo-bc-4-build             0/1       Completed   0          16m       openshift.io/build.name=springdemo-bc-4
-po/springdemo-pgk2ierggpft-5-ggkne   1/1       Running     0          14m       appinstance=springdemo-pgk2ierggpft,appowner=developer,deployment=springdemo-pgk2ierggpft-5,deploymentconfig=springdemo-pgk2ierggpft,group=com.redhat.demo,project=Bootstrap,provider=fabric8,version=0.0.1-SNAPSHOT
+NAME                       CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE       LABELS
+svc/springdemo-v1-10-abc   172.30.41.170   <none>        80/TCP    4h        appinstance=springdemo-abc,appname=springdemo,appowner=developer,custom-app-uid=abc,expose=true,group=com.redhat.demo,interface-version=1.1,project=Bootstrap,provider=fabric8,version=0.0.4-SNAPSHOT
+
+NAME                             READY     STATUS      RESTARTS   AGE       LABELS
+po/springdemo-1-10-abc-1-build   0/1       Completed   0          4h        openshift.io/build.name=springdemo-1-10-abc-1
+po/springdemo-1-10-abc-2-build   0/1       Completed   0          4h        openshift.io/build.name=springdemo-1-10-abc-2
+po/springdemo-1-10-abc-3-build   0/1       Completed   0          3h        openshift.io/build.name=springdemo-1-10-abc-3
+po/springdemo-1-10-abc-4-build   0/1       Completed   0          3h        openshift.io/build.name=springdemo-1-10-abc-4
+po/springdemo-1-10-abc-5-build   0/1       Completed   0          1h        openshift.io/build.name=springdemo-1-10-abc-5
+po/springdemo-1-10-abc-6-build   0/1       Completed   0          1h        openshift.io/build.name=springdemo-1-10-abc-6
+po/springdemo-1-10-abc-7-0w19w   1/1       Running     0          1h        appinstance=springdemo-abc,appowner=developer,deployment=springdemo-1-10-abc-7,deploymentconfig=springdemo-1-10-abc,group=com.redhat.demo,project=Bootstrap,provider=fabric8,version=0.0.4-SNAPSHOT
+po/springdemo-1-10-abc-7-28660   1/1       Running     0          1h        appinstance=springdemo-abc,appowner=developer,deployment=springdemo-1-10-abc-7,deploymentconfig=springdemo-1-10-abc,group=com.redhat.demo,project=Bootstrap,provider=fabric8,version=0.0.4-SNAPSHOT
 ```

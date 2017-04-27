@@ -198,6 +198,7 @@
                     <execution>
                         <goals>
                             <goal>repackage</goal>
+                            <goal>build-info</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -224,6 +225,7 @@
                             <service>
                                 <appname>${{APPNAME}}</appname>
                                 <custom-app-uid>${{UNIQUE_ID}}</custom-app-uid>
+                                <interface-version>${rest.interface.version}</interface-version>
                             </service>
                         </labels>
                         <annotations>

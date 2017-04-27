@@ -2,22 +2,22 @@
 apiVersion: "v1"
 kind: "Template"
 metadata:
-  labels:
-    appinstance: ${APPNAME}
-    appowner: ${APPOWNER}
+   labels:
+       appinstance: ${APPNAME}-${SERVICEVERSION}-${UNIQUE_ID}
+       appowner: ${APPOWNER}
 objects:
 - apiVersion: v1
   kind: BuildConfig
   metadata:
     labels:
-       appinstance: ${APPNAME}
-    name: ${APPNAME}-bc
+       appinstance: ${APPNAME}-${SERVICEVERSION}-${UNIQUE_ID}
+    name: ${APPNAME}-${SERVICEVERSION}-${UNIQUE_ID}
   spec:
     nodeSelector: {}
     output:
       to:
         kind: ImageStreamTag
-        name: ${APPNAME}-is:${ISTAG}
+        name: ${APPNAME}-${SERVICEVERSION}-${UNIQUE_ID}:${ISTAG}
     postCommit: {}
     resources: {}
     runPolicy: Serial
@@ -35,17 +35,25 @@ objects:
   kind: ImageStream
   metadata:
     labels:
-      appinstance: ${APPNAME}
-    name: ${APPNAME}-is
+      appinstance: ${APPNAME}-${SERVICEVERSION}-${UNIQUE_ID}
+    name: ${APPNAME}-${SERVICEVERSION}-${UNIQUE_ID}
 parameters:
 - name: "APPNAME"
-  from: "[a-z0-9]{12}"
+  from: "[a-z0-9]{16}"
   description: "The name of the application"
-  required: true
-- name: "ISTAG"
-  description: "The image stream tag name"
   required: true
 - name: "APPOWNER"
   from: "[a-z0-9]{12}"
   description: "The owner of the application, populate with oc whoami"
+  required: true
+- name: "SERVICEVERSION"
+  from: "[0-9_]{12}"
+  description: "The interface version of the service"
+  required: true
+- name: "ISTAG"
+  description: "The image stream tag name"
+  required: true
+- name: "UNIQUE_ID"
+  description: "unique numeric id to differentiate between deployments"
+  from: "[a-z0-9]{3}"
   required: true
