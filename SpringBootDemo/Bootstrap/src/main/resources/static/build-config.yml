@@ -28,7 +28,7 @@ objects:
       sourceStrategy:
         from:
           kind: DockerImage
-          name: registry.access.redhat.com/jboss-fuse-6/fis-java-openshift:latest
+          name: ${builder.image.version}
       type: Source
     triggers: []
 - apiVersion: v1

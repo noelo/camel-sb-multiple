@@ -129,6 +129,7 @@
                 <filtering>true</filtering>
                 <includes>
                     <include>**/metadata.properties</include>
+                    <include>**/build-config.yml</include>
                 </includes>
             </resource>
             <resource>
@@ -136,6 +137,7 @@
                 <filtering>false</filtering>
                 <excludes>
                     <exclude>**/metadata.properties</exclude>
+                    <exclude>**/build-config.yml</exclude>
                 </excludes>
             </resource>
 
@@ -244,12 +246,12 @@
                             <exclude>fmp-name</exclude>
                             <exclude>fmp-git</exclude>
                         </excludes>
-                        <config>
-                            <fmp-service>
-                                <name>${APPNAME}-${UNIQUE_ID}-svc</name>
-                                <type>LoadBalancer</type>
-                            </fmp-service>
-                        </config>
+                        <!--<config>-->
+                            <!--<fmp-service>-->
+                                <!--<name>${APPNAME}-${UNIQUE_ID}-svc</name>-->
+                                <!--<type>LoadBalancer</type>-->
+                            <!--</fmp-service>-->
+                        <!--</config>-->
                     </enricher>
                 </configuration>
             </plugin>

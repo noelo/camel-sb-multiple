@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.redhat.demo</groupId>
     <artifactId>SpringBootDemo</artifactId>
-    <version>0.0.5-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>SpringBootDemo</name>
@@ -26,6 +26,7 @@
         <org.interface.classifier>28.11</org.interface.classifier>
         <org.interface.version>1.0.0-alpha</org.interface.version>
         <rest.interface.version>1.1</rest.interface.version>
+        <builder.image.version>registry.access.redhat.com/jboss-fuse-6/fis-java-openshift:latest</builder.image.version>
     </properties>
 
     <dependencyManagement>
