@@ -2,16 +2,25 @@ package com.redhat.test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
-@Configuration
-//@ConfigurationProperties(prefix = "Secret")
+import javax.annotation.PostConstruct;
+
+@Component
 public class DBConfig {
 
-    @Value("${secret.password}")
-    private String password;
 
-    @Value("${secret.username}")
-    private String username;
+	@Value("${dbsecret.username:null}")
+	private String username;
+
+	@Value("${dbsecret.password:null}")
+	private String password;
+
+	@Value("${dbconfig.hostname}")
+	private String hostname;
+
+	@Value("${dbconfig.port}")
+	private String port;
 
     public DBConfig() {
     }
@@ -24,10 +33,9 @@ public class DBConfig {
 		return username;
 	}
 
-	@Override
-	public String toString() {
-		return "DBConfig [password=" + password + ", username=" + username + "]";
+	@PostConstruct
+	public void init(){
+		System.out.println(">>>>>>>Database config -->>>>"+hostname+":"+port+" creds "+username +":"+password);
 	}
-	
 	
 }

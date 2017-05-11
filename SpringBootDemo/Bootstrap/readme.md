@@ -18,7 +18,7 @@ In the examples below all resource use the name **springdemo-pgk2ierggpft**
 ### Creating the Buildconfig and ImageStream from a template
 
 ```
-$oc process -p APPNAME=springdemo -p ISTAG=iter1 -p APPOWNER=`oc whoami`  -p SERVICEVERSION="1-10" -p UNIQUE_ID="abc" -f ./Bootstrap/src/main/resources/static/build-config.yml |oc create -f-
+$oc process -p APPNAME=springdemo -p ISTAG=iter1 -p APPOWNER=`oc whoami`  -p SERVICEVERSION="1-10" -p UNIQUE_ID="abc" -f ./Bootstrap/target/classes/static//build-config.yml |oc create -f-
 
 buildconfig "springdemo-1-10-abc" created
 imagestream "springdemo-1-10-abc" created
@@ -55,7 +55,7 @@ $oc create configmap ${APPNAME} --from-file=./Bootstrap/application.properties
 
 ### Creating Secrets
 ```
-$oc create secret generic ${APPNAME} --from-literal=secret.username=value1 --from-literal=secret.password=value1
+$oc create secret generic ${APPNAME} --from-literal=dbsecret.username=value1 --from-literal=dbsecret.password=value1
 ```
 
 ### Mounting the secret for consumption in the application

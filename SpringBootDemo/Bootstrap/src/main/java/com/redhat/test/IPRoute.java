@@ -15,7 +15,7 @@ public class IPRoute extends RouteBuilder {
     public void configure() throws Exception {
 
         from("servlet:///java?servletName=CamelServlet&matchOnUriPrefix=true").routeId("javaroute").streamCaching().tracing()
-                .log("Incoming request")
+//                .log("Incoming request with bean ${bean:DBConfig?method=toString}")
                 .to("direct:getip")
                 .log("Outgoing request ==> ${body} ${headers}");
 
