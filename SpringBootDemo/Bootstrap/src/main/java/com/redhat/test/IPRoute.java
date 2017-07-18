@@ -49,8 +49,6 @@ public class IPRoute extends RouteBuilder {
                 .transform().constant("Slow response")
                 .log("Slow processing end: ${threadName}");
 
-
-
     }
 }
 

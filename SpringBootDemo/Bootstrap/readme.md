@@ -18,69 +18,73 @@ In the examples below all resource use the name **springdemo-pgk2ierggpft**
 ### Creating the Buildconfig and ImageStream from a template
 
 ```
-$oc process -p APPNAME=springdemo -p ISTAG=iter1 -p APPOWNER=`oc whoami`  -p SERVICEVERSION="1-10" -p UNIQUE_ID="abc" -f ./Bootstrap/target/classes/static//build-config.yml |oc create -f-
+$ oc process -p APPNAME=springdemo -p ISTAG=iter1 -p APPOWNER=`oc whoami`  -p SERVICEVERSION="1-10" -p UNIQUE_ID="abc" -f ./Bootstrap/target/classes/static//build-config.yml |oc create -f-
 
 buildconfig "springdemo-1-10-abc" created
 imagestream "springdemo-1-10-abc" created
 
-$oc start-build bc/springdemo-1-10-abc --from-file=./Bootstrap/target/Bootstrap-0.0.5-SNAPSHOT.jar
+$ oc start-build bc/springdemo-1-10-abc --from-file=./Bootstrap/target/Bootstrap-0.0.5-SNAPSHOT.jar
  Uploading file "Bootstrap/target/Bootstrap-0.0.5-SNAPSHOT.jar" as binary input for the build ...
 build "springdemo-1-10-abc-1" started
 ```
 
 ### Creating the DC, Service, External Service from a template
 ```
-$oc process  -f ./Bootstrap/target/classes/META-INF/fabric8/openshift/bootstrap-template.yml -p APPNAME=springdemo -p SERVICEVERSION="1-10" -p ISTAG=iter1 UNIQUE_ID=abc APPOWNER=`oc whoami` | oc create -f-
+$ oc process  -f ./Bootstrap/target/classes/META-INF/fabric8/openshift/bootstrap-template.yml -p APPNAME=springdemo -p SERVICEVERSION="1-10" -p ISTAG=iter1 -p UNIQUE_ID=abc -p APPOWNER=`oc whoami` | oc create -f-
 service "springdemo-v1-10-abc" created
 deploymentconfig "springdemo-1-10-abc" created
 route "springdemo-v1-10-abc" created
+
+
 ```
 ### Adding role permissions to pull config maps into the application
 ```
-$oc policy add-role-to-user view --serviceaccount=default
+$ oc policy add-role-to-user view --serviceaccount=default
+
+$ oc policy add-role-to-user view system:serviceaccount:$(oc project -q):default -n $(oc project -q)
 ```
 
 #### To get the generated application name you can use the following
 ```
-$oc get dc --template='{{range .items}}{{.metadata.name}}{{end}}'
+$ oc get dc --template='{{range .items}}{{.metadata.name}}{{end}}'
 
 APPNAME=`oc get dc --template='{{range .items}}{{.metadata.name}}{{end}}'`
 ```
 
 ### Creating the ConfigMaps
 ```
-$oc create configmap ${APPNAME} --from-file=./Bootstrap/application.properties
+$ oc create configmap ${APPNAME} --from-file=./Bootstrap/application.properties
 ```
 
 
 ### Creating Secrets
 ```
-$oc create secret generic ${APPNAME} --from-literal=dbsecret.username=value1 --from-literal=dbsecret.password=value1
+$ oc create secret generic ${APPNAME} --from-literal=dbsecret.username=value1 --from-literal=dbsecret.password=value1
 ```
 
 ### Mounting the secret for consumption in the application
 
 ```
-$oc volume dc/${APPNAME} --add -t secret -m /etc/ocp/secrets --secret-name=${APPNAME} --name=${APPNAME}-secret
+$ oc volume dc/${APPNAME} --add -t secret -m /tmp/secrets --secret-name=${APPNAME} --name=${APPNAME}-secret
 ```
 
 The mount point is defined in the Spring bootstrap.properties
 ```
-spring.cloud.kubernetes.secrets.paths=/etc/ocp/secrets
+spring.cloud.kubernetes.secrets.paths=/tmp/secrets
 ```
 
 
 ImageStreams need to be tagged to start a deployment  e.g.
 
 ```
-$oc tag springdemo-is:latest springdemo-is:iter1
-$oc tag springdemo-is:latest springdemo-is:test2
+$ oc tag springdemo-is:latest springdemo-is:iter1
+$ oc tag springdemo-is:latest springdemo-is:test2
 
 ```
 
 ### Scaling 
 ```
-$oc scale dc/springdemo-1-10-abc --replicas=2
+$ oc scale dc/springdemo-1-10-abc --replicas=2
 ```
 
 ### Full resource list
@@ -118,6 +122,14 @@ po/springdemo-1-10-abc-2-7tik5   1/1       Running     0          8m        appi
 ### Request Testing
 ```
 for ((i=1;i<=100000;i++)); do sleep 0.5&&curl http://springdemo-v1-10-abc-spring.192.168.64.3.xip.io/info ;date; done
+
+or 
+
+wget http://springdemo-v1-10-abc-springboot.cloudapps.nocosetest.com/camel/crash
+
+wget http://springdemo-v1-10-abc-springboot.cloudapps.nocosetest.com/camel/slow
+
+
 ```
 
 

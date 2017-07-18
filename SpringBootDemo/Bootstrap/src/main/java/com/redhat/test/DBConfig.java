@@ -10,10 +10,10 @@ import javax.annotation.PostConstruct;
 public class DBConfig {
 
 
-	@Value("${dbsecret.username:null}")
+	@Value("${dbsecret.username}")
 	private String username;
 
-	@Value("${dbsecret.password:null}")
+	@Value("${dbsecret.password}")
 	private String password;
 
 	@Value("${dbconfig.hostname}")

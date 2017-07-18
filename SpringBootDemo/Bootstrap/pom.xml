@@ -216,8 +216,8 @@
                     <resources>
                         <labels>
                             <service>
-                                <appname>${{APPNAME}}</appname>
-                                <custom-app-uid>${{UNIQUE_ID}}</custom-app-uid>
+                                <appname>${project.artifactId}</appname>
+                                <custom-app-uid>${UNIQUE_ID}</custom-app-uid>
                                 <interface-version>${rest.interface.version}</interface-version>
                             </service>
                         </labels>

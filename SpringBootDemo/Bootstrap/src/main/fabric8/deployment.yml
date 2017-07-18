@@ -33,7 +33,7 @@ spec:
         - name: JAVA_APP_DIR
           value: /deployments
         - name: JAVA_OPTIONS
-          value: -Dspring.application.name=${APPNAME}-${SERVICEVERSION}-${UNIQUE_ID} -Dspring.cloud.kubernetes.secrets.name=${APPNAME}-${SERVICEVERSION}-${UNIQUE_ID}
+          value: -Dspring.application.name=${APPNAME}-${SERVICEVERSION}-${UNIQUE_ID} -Dspring.cloud.kubernetes.secrets.name=${APPNAME}-${SERVICEVERSION}-${UNIQUE_ID} -Dspring.cloud.kubernetes.secrets.paths=/tmp/secrets/
         image: ${APPNAME}-${SERVICEVERSION}-${UNIQUE_ID}:${ISTAG}
         imagePullPolicy: IfNotPresent
         livenessProbe:
